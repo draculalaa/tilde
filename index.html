@@ -7,11 +7,10 @@
 
 <style>
   :root {
-    --border-radius: 1rem;
-    --color-background: #111;
-    --color-text-subtle: #888;
-    --color-text: #eee;
-    --font-family: -apple-system, Helvetica, sans-serif;
+    --color-background: #282828;
+    --color-text-subtle: #89b482;
+    --color-text: #d4be98;
+    --color-text-hover: #e78a4e;
     --font-size: clamp(16px, 1.6vw, 18px);
     --font-weight-bold: 700;
     --font-weight-normal: 400;
@@ -24,6 +23,7 @@
       --color-background: #e8e8e8;
       --color-text-subtle: #606060;
       --color-text: #111;
+      --color-text-hover: #111;
     }
   }
 </style>
@@ -33,31 +33,154 @@
     commandPathDelimiter: '/',
     commandSearchDelimiter: ' ',
     defaultSearchTemplate: 'https://duckduckgo.com/?q={}',
-    openLinksInNewTab: true,
-    suggestionLimit: 4,
+    openLinksInNewTab: false,
+    suggestionLimit: 8,
   };
 
   const COMMANDS = new Map([
-    ['a', { name: 'Chat', url: 'https://chat.openai.com' }],
-    ['b', { name: 'Dribbble', url: 'https://dribbble.com/shots/recent' }],
-    ['c', { name: 'Calendar', url: 'https://calendar.google.com' }],
     [
-      'd',
+      '~',
       {
-        name: 'Drive',
-        url: 'https://drive.google.com/drive/u/0/my-drive',
+        name: 'HKServ@zerotier',
+        suggestions: ['http://10.20.30.1:5244', 'http://10.20.30.1:3010', 'http://10.20.30.1:8990', 'http://10.20.30.1:8096'],
+        url: 'http://10.20.30.1',
       },
     ],
-    ['f', { name: 'Figma', url: 'https://www.figma.com' }],
-    ['g', { name: 'GitHub', url: 'https://github.com' }],
-    ['k', { name: 'Keep', url: 'https://keep.google.com' }],
-    ['n', { name: 'Notion', url: 'https://www.notion.so' }],
     [
-      'p',
+	  'e5',
+	  {
+	    name: 'E5 profile',
+	    suggestions: ['developer.microsoft.com/en-us/microsoft-365/profile'],
+	    url: 'https://developer.microsoft.com/en-us/microsoft-365/profile',
+	  },
+	],
+    [
+      'm',
       {
-        name: 'Proton',
-        suggestions: ['drive.proton.me/u/1/'],
-        url: 'https://mail.proton.me/u/1/inbox',
+        name: 'Mail',
+        suggestions: [
+          'mail.google.com/mail',
+          'outlook.live.com/mail',
+          'mail.qq.com/cgi-bin/frame_html',
+          'mail.aliyun.com/alimail'
+        ],
+        url: 'https://mail.google.com/mail/?tab=wm',
+      },
+    ],
+    ['d', { name: 'DeepL', suggestions: ['deepl.com'], url: 'https://www.deepl.com/zh/translator' }],
+    ['a', { name: 'DDG AI Chat', suggestions: ['duckduckgo.com/chat'], url: 'https://duckduckgo.com/chat' }],
+    ['ge', { name: 'Gemini', suggestions: ['gemini.google.com'], url: 'https://gemini.google.com/app' }],
+    ['c', { name: 'ChatGPT', suggestions: ['chat.openai.com'], url: 'https://chat.openai.com' }],
+    [
+	  'w',
+	  {
+	    name: 'Wikipedia',
+	    searchTemplate: '/zh-cn/{}',
+	    suggestions: [
+	      'zh.wikipedia.org',
+	      '可使用“w+空格+条目名”直接访问特定维基条目',
+	    ],
+	    url: 'https://zh.wikipedia.org/zh-cn/',
+	  },
+	],
+	[
+	  'A',
+	  {
+	    name: 'Archwikicn',
+	    searchTemplate: '/wzh/index.php?search={}',
+	    suggestions: [
+	      'wiki.archlinuxcn.org',
+	      '可使用“A+空格+关键词”搜索archwiki',
+	    ],
+	    url: 'https://wiki.archlinuxcn.org',
+	  },
+	],
+<!--    ['so', { name: 'Solidot', url: 'https://www.solidot.org/' }],
+<!--    ['osc', { name: '开源中国', url: 'https://www.oschina.net/' }],
+<!--    ['du', { name: 'Dustloop Wiki', url: 'https://www.dustloop.com/w/Main_Page' }],
+<!--    [
+<!--	  'ru',
+<!--	  {
+<!--	    name: 'RATING UPDATE',
+<!--	    suggestions: [
+<!--	      'ru/player/2EC3DBF10E80C62',
+<!--	    ],
+<!--	    url: 'https://puddle.farm',
+<!--	  },
+<!--	],
+    [
+      'y',
+      {
+        name: 'YouTube',
+        searchTemplate: '/results?search_query={}',
+        suggestions: [
+          'youtube.com','youtube.com/feed/subscriptions','可使用“y+空格+关键词”搜索油管',
+        ],
+        url: 'https://youtube.com',
+      },
+    ],
+    [
+      'b',
+      {
+        name: '比比汗丽丽',
+        searchTemplate: 'https://search.bilibili.com/all?keyword={}',
+        suggestions: [
+          'bilibili.com','t.bilibili.com','live.bilibili.com','可使用“b+空格+关键词”搜索阿B',
+        ],
+        url: 'https://www.bilibili.com/',
+      },
+    ],
+    [
+	  'bgm',
+	  {
+	    name: 'Bangumi',
+	    searchTemplate: 'https://bgm.tv/subject_search/{}',
+	    suggestions: [
+	      'bgm.tv','可使用“bgm+空格+关键词”搜索bangumi',
+	    ],
+	    url: 'https://bgm.tv',
+	  },
+	],
+    [
+	  'f',
+	  {
+	    name: '萌番',
+	    searchTemplate: 'https://www.mengfan.tv/search/?wd={}',
+	    suggestions: [
+	      'mengfan.tv','可使用“f+空格+关键词”搜索萌番',
+	    ],
+	    url: 'https://www.mengfan.tv',
+	  },
+	],
+    [
+	  's',
+	  {
+	    name: 'Steam',
+	    searchTemplate: '/search/?term={}',
+	    suggestions: [
+		  'steampowered.com',
+	      'steam.iflow.work/#挂刀行情',
+	      'steamcommunity.com/market/',
+	      'steamcommunity.com/id/draculala/home',
+	      'steamdb.info',
+	      '可使用“s+空格+关键词”搜索steam商店',
+	    ],
+	    url: 'https://store.steampowered.com',
+	  },
+	],
+    [
+      's1',
+      {
+        name: 'Stage1st',
+        suggestions: [
+          'bbs.saraba1st.com',
+          's1/2b/search.php',
+          's1/2b/forum-75#外野',
+          's1/2b/forum-51-1.html#数码',
+          's1/2b/forum-6-1.html#动漫',
+          's1/2b/forum-4-1.html#游戏',
+        ],
+        url: 'https://bbs.saraba1st.com/2b/',
       },
     ],
     [
@@ -65,48 +188,296 @@
       {
         name: 'Reddit',
         suggestions: [
+          'reddit.com',
+          'r/r/unixporn',
           'r/r/selfhosted',
-          'r/r/dataisbeautiful',
-          'r/r/fujix',
-          'r/r/leetcode',
+          'r/r/vaping',
         ],
         url: 'https://reddit.com',
       },
     ],
-    ['s', { name: 'Supabase', url: 'https://supabase.com/dashboard/projects' }],
-    [
-      'u',
-      {
-        name: 'Unsplash',
-        searchTemplate: '/s/photos/{}',
-        url: 'https://unsplash.com',
-      },
-    ],
-    ['v', { name: 'Vercel', url: 'https://vercel.com/dashboard' }],
     [
       'x',
       {
-        name: 'xvvvyz',
-        searchTemplate: 'https://{}.xvvvyz.xyz',
-        suggestions: ['x pomodoro', 'x jelly', 'x torrent', 'x proxy'],
-        url: 'https://xvvvyz.xyz',
+        name: 'Twitter',
+        searchTemplate: '/search?q={}',
+	    suggestions: [
+	      'x.com',
+	      '可使用“x+空格+关键词”搜索小蓝鸟',
+	    ],
+        url: 'https://x.com',
       },
     ],
     [
-      'y',
+	  'g',
+	  {
+	    name: 'GitHub',
+	    searchTemplate: 'https://github.com/search?q={}&type=repositories',
+	    suggestions: [
+	      'github.com',
+	      '可使用“g+空格+关键词”搜索GitHub仓库',
+	    ],
+	    url: 'https://github.com',
+	  },
+	],
+    ['sr', { name: 'софтовый форум', suggestions: ['softoroom.org'], url: 'https://softoroom.org/' }],
+    [
+      'z',
       {
-        name: 'YouTube',
-        searchTemplate: '/results?search_query={}',
-        url: 'https://youtube.com/feed/subscriptions',
+        name: '小纸条',
+        suggestions: ['ali.gitcafe.ink'],
+        url: 'https://ali.gitcafe.ink',
       },
     ],
     [
-      '0',
+      'dmhy',
       {
-        name: 'localhost',
-        searchTemplate: ':{}',
-        suggestions: ['0 54323', '0 54324'],
-        url: 'http://localhost:3000',
+        name: '動漫花園',
+        searchTemplate: '/topics/list?keyword={}',
+	    suggestions: [
+	      'dmhy.org',
+	      '可使用“dmhy+空格+关键词”搜索動漫花園',
+	    ],
+        url: 'https://www.dmhy.org',
+      },
+    ],
+    [
+      'hd',
+      {
+        name: 'HDTime',
+        suggestions: [
+          'hd/attendance.php',
+          'hdtime.org'
+        ],
+        url: 'https://hdtime.org',
+      },
+    ],
+    ['mt', { name: 'm-team',suggestions: ['kp.m-team.cc','zp.m-team.io'] , url: 'https://kp.m-team.cc/index' }],
+    [
+      'pig',
+      {
+        name: '猪猪',
+        suggestions: [
+          'pig/attendance.php',
+          'piggo.me'
+        ],
+        url: 'https://piggo.me',
+      },
+    ],
+    [
+      'icc',
+      {
+        name: '冰激凌',
+        suggestions: [
+          'icc/attendance.php',
+          'www.icc2022.com',
+        ],
+        url: 'https://www.icc2022.com',
+      },
+    ],
+    ['t', { name: 'TorrentLeech', suggestions: ['www.torrentleech.cc'], url: 'https://www.torrentleech.cc' }],
+    [
+      'u',
+      {
+        name: 'UBits',
+        suggestions: [
+          'u/attendance.php',
+          'ubits.club',
+        ],
+        url: 'https://ubits.club',
+      },
+    ],
+    [
+      'v',
+      {
+        name: '聆音club',
+        suggestions: [
+          'v/attendance.php',
+          'pt.soulvoice.club',
+        ],
+        url: 'https://pt.soulvoice.club',
+      },
+    ],
+    [
+      'h',
+      {
+        name: 'Hanime',
+	    searchTemplate: '/search?query={}',
+        suggestions: [
+          'hanime1.me',
+          'hanime1.me/jav',
+          '可使用“h+空格+关键词”搜索Hanime',
+        ],
+        url: 'https://hanime1.me',
+      },
+    ],
+    [
+      'nya',
+      {
+        name: 'sukebei.nyaa',
+	    searchTemplate: '/?q={}',
+	    suggestions: [
+	      'sukebei.nyaa.si',
+	      'nyaa.si',
+	      'fap.iss.one',
+	      '可使用“nya+空格+关键词”搜索种子',
+	    ],
+        url: 'https://sukebei.nyaa.si/',
+      },
+    ],
+    [
+      'gg',
+      {
+        name: 'GGBases',
+	    searchTemplate: '/search.so?title={}',
+	    suggestions: [
+	      'ggbases.com',
+	      '可使用“gg+空格+关键词”搜索黄油种子',
+	    ],
+        url: 'https://www.ggbases.com',
+      },
+    ],
+    [
+      'e',
+      {
+        name: 'ExHentai',
+	    searchTemplate: 'https://exhentai.org/?f_search={}',
+	    suggestions: [
+	      'exhentai.org',
+	      'r.e-hentai.org',
+	      'hitomi.la',
+	      '可使用“e+空格+关键词”搜索易恒泰',
+	    ],
+        url: 'https://exhentai.org',
+      },
+    ],
+    [
+      'ao',
+      {
+        name: 'asmr.one',
+	    searchTemplate: '/works?keyword={}',
+	    suggestions: [
+	      'asmr.one',
+	      '可使用“i+空格+关键词”搜索asmr作品',
+	    ],
+        url: 'https://asmr.one/works',
+      },
+    ],
+    [
+      'ag',
+      {
+        name: 'asmrgay',
+	    suggestions: [
+	      'www.asmrgay.com', 'www.asmr.pw',
+	    ],
+        url: 'https://asmrgay.org/',
+      },
+    ],
+    [
+      'be',
+      {
+        name: 'BepisDB',
+	    suggestions: [
+	      'db.bepis.moe',
+	      'be/koikatsu', 
+	      'be/kkscenes', 
+	      'be/aishoujo',
+	      'be/aiscenes',
+	    ],
+        url: 'https://db.bepis.moe',
+      },
+    ],
+    [
+      'dmm',
+      {
+        name: 'Fanza',
+	    searchTemplate: '/search/=/searchstr={}',
+	    suggestions: [
+	      'dmm.co.jp',
+	      '可使用“dmm+空格+关键词”搜索商品',
+	    ],
+        url: 'https://www.dmm.co.jp',
+      },
+    ],
+    [
+      'dl',
+      {
+        name: 'DLsite',
+	    searchTemplate: 'https://www.dlsite.com/maniax/work/=/product_id/{}.html',
+	    suggestions: [
+	      'dlsite.com/maniax',
+	      'ci-en.dlsite.com',
+	      '可使用“dl+空格+RJ号/VJ号等”直接访问特定商品页',
+	    ],
+        url: 'https://www.dlsite.com/maniax',
+      },
+    ],
+    [
+      'p',
+      {
+        name: 'Pixiv',
+	    searchTemplate: '/tags/{}/artworks?s_mode=s_tag',
+	    suggestions: [
+	      'pixiv.net',
+	      'p/cate_r18.php',
+	      'p/bookmark_new_illust.php',
+	      'p/ranking.php',
+	      '可使用“p+空格+关键词”搜索绘画',
+	    ],
+        url: 'https://www.pixiv.net/',
+      },
+    ],
+    [
+      'i',
+      {
+        name: 'Iwara',
+	    searchTemplate: 'https://oreno3d.com/search?keyword={}',
+	    suggestions: [
+	      'iwara.tv',
+	      'i/subscriptions/videos',
+	      'i/videos?sort=trending',
+	      'oreno3d.com',
+	      'erommdtube.com',
+	      '可使用“i+空格+关键词”搜索MMD（通过oreno3d检索）',
+	    ],
+        url: 'https://www.iwara.tv/',
+      },
+    ],
+    [
+      'n',
+      {
+        name: '南+',
+	    suggestions: [
+	      'www.south-plus.net', 'www.blue-plus.net', 'www.north-plus.net',
+	    ],
+        url: 'https://www.south-plus.net/index.php',
+      },
+    ],
+    [
+      'jdb',
+      {
+        name: 'JavDB',
+	    searchTemplate: '/search?q={}',
+	    suggestions: [
+	      'javdb.com',
+	      'jdb/rankings/movies?p=weekly&t=censored',
+	      '可使用“jdb+空格+关键词”搜索',
+	    ],
+        url: 'https://javdb.com',
+      },
+    ],
+    [
+      'j',
+      {
+        name: 'JAVLibrary',
+	    searchTemplate: 'https://www.javlibrary.com/cn/vl_searchbyid.php?keyword={}',
+	    suggestions: [
+	      'www.javlibrary.com/cn',
+	      'j/cn/vl_mostwanted.php',
+	      'j/cn/vl_bestrated.php',
+	      '可使用“j+空格+番号”搜索（非关键词搜索）',
+	    ],
+        url: 'https://www.javlibrary.com/cn',
       },
     ],
   ]);
@@ -135,10 +506,10 @@
     }
 
     .command::after {
-      background: var(--color-text-subtle);
+      background: var(--color-text);
       content: ' ';
       inset: 1px;
-      opacity: 0.05;
+      opacity: 0;
       position: absolute;
       transition: opacity var(--transition-speed);
     }
@@ -160,7 +531,7 @@
     }
 
     .command:where(:focus, :hover) .name {
-      color: var(--color-text);
+      color: var(--color-text-hover);
     }
 
     @media (min-width: 320px) {
@@ -171,8 +542,8 @@
 
     @media (min-width: 900px) {
       .commands {
-        columns: 4;
-        max-width: 45rem;
+        columns: 6;
+        max-width: 90rem;
       }
     }
   </style>
