@@ -33,7 +33,6 @@
   const CONFIG = {
     commandPathDelimiter: '/',
     commandSearchDelimiter: ' ',
-    defaultSearchTemplate: 'https://duckduckgo.com/?q={}',
     openLinksInNewTab: false,
     suggestionLimit: 8,
   };
@@ -806,8 +805,7 @@
         return { key: pathKey, path, query, splitBy, url };
       }
 
-      const [baseUrl, rest] = Search.#splitUrl(CONFIG.defaultSearchTemplate);
-      const url = Search.#formatSearchUrl(baseUrl, rest, query);
+      const url = this.#hasProtocol(query) ? query : `https://duckduckgo.com/?q=${query}`;
       return { query, search: query, url };
     };
 
